@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 300" role="img" aria-labelledby="banner-title banner-desc">
+  <title id="banner-title">EPUB Library</title>
+  <desc id="banner-desc">A self-hosted reading room: a dark green banner with a shelf of colourful books.</desc>
+
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#33402D"/>
+      <stop offset="0.55" stop-color="#242D21"/>
+      <stop offset="1" stop-color="#181E16"/>
+    </linearGradient>
+    <linearGradient id="wood" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#C08F5B"/>
+      <stop offset="0.55" stop-color="#8A5F38"/>
+      <stop offset="1" stop-color="#57361F"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#C9A45C" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#C9A45C" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grain" width="9" height="9" patternUnits="userSpaceOnUse">
+      <path d="M0 9L9 0" stroke="#FFFFFF" stroke-opacity="0.028" stroke-width="1"/>
+    </pattern>
+  </defs>
+
+  <rect width="1200" height="300" fill="url(#bg)"/>
+  <rect width="1200" height="300" fill="url(#grain)"/>
+  <circle cx="960" cy="150" r="235" fill="url(#glow)"/>
+
+  <!-- words -->
+  <g>
+    <text x="80" y="92" fill="#C9A45C" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="600" letter-spacing="4.2">A SELF-HOSTED READING ROOM</text>
+    <text x="80" y="162" fill="#F4EDDC" font-family="Georgia, 'Times New Roman', serif" font-size="64" letter-spacing="-1.2">EPUB Library</text>
+    <rect x="80" y="188" width="96" height="2" fill="#C9A45C"/>
+    <text x="80" y="223" fill="#C9BFA8" font-family="Arial, Helvetica, sans-serif" font-size="18">Your books, ready for the e-reader.</text>
+    <text x="80" y="260" fill="#8B9A82" font-family="Arial, Helvetica, sans-serif" font-size="12" letter-spacing="1.6">NO DATABASE · NO BUILD STEP · PLAIN PHP</text>
+  </g>
+
+  <line x1="716" y1="58" x2="716" y2="244" stroke="#C9A45C" stroke-opacity="0.18"/>
+
+  <!-- shelf -->
+  <g>
+    <rect x="770" y="248" width="372" height="14" rx="2" fill="url(#wood)"/>
+    <rect x="770" y="248" width="372" height="2" fill="#FFFFFF" opacity="0.18"/>
+    <rect x="770" y="260" width="372" height="3" fill="#3D2413" opacity="0.55"/>
+
+    <!-- book spines -->
+    <g>
+      <rect x="786" y="120" width="22" height="128" rx="1.5" fill="#7A3428"/>
+      <rect x="789" y="130" width="2" height="106" fill="#FFFFFF" opacity="0.16"/>
+      <rect x="786" y="214" width="22" height="3" fill="#000000" opacity="0.18"/>
+
+      <rect x="812" y="144" width="15" height="104" rx="1.5" fill="#C9A45C"/>
+      <rect x="814" y="152" width="2" height="86" fill="#FFFFFF" opacity="0.22"/>
+
+      <rect x="831" y="106" width="26" height="142" rx="1.5" fill="#33526E"/>
+      <rect x="835" y="116" width="2" height="120" fill="#FFFFFF" opacity="0.15"/>
+      <rect x="831" y="196" width="26" height="3" fill="#000000" opacity="0.2"/>
+
+      <rect x="861" y="150" width="17" height="98" rx="1.5" fill="#5B3A5C"/>
+      <rect x="863" y="158" width="2" height="80" fill="#FFFFFF" opacity="0.15"/>
+
+      <rect x="882" y="118" width="23" height="130" rx="1.5" fill="#46573F"/>
+      <rect x="885" y="128" width="2" height="108" fill="#FFFFFF" opacity="0.14"/>
+      <rect x="882" y="216" width="23" height="3" fill="#000000" opacity="0.18"/>
+
+      <rect x="909" y="136" width="29" height="112" rx="1.5" fill="#8A4B2F"/>
+      <rect x="913" y="146" width="2" height="90" fill="#FFFFFF" opacity="0.15"/>
+      <rect x="909" y="210" width="29" height="3" fill="#000000" opacity="0.2"/>
+
+      <rect x="942" y="102" width="18" height="146" rx="1.5" fill="#2F4F4A"/>
+      <rect x="944" y="112" width="2" height="124" fill="#FFFFFF" opacity="0.16"/>
+
+      <rect x="964" y="146" width="24" height="102" rx="1.5" fill="#A06A2C"/>
+      <rect x="967" y="156" width="2" height="80" fill="#FFFFFF" opacity="0.18"/>
+
+      <rect x="992" y="122" width="20" height="126" rx="1.5" fill="#6B3A2A"/>
+      <rect x="994" y="132" width="2" height="104" fill="#FFFFFF" opacity="0.15"/>
+
+      <rect x="1016" y="138" width="27" height="110" rx="1.5" fill="#3E5B4A"/>
+      <rect x="1020" y="148" width="2" height="88" fill="#FFFFFF" opacity="0.14"/>
+      <rect x="1016" y="214" width="27" height="3" fill="#000000" opacity="0.18"/>
+
+      <rect x="1047" y="110" width="16" height="138" rx="1.5" fill="#7A3428"/>
+      <rect x="1049" y="120" width="2" height="116" fill="#FFFFFF" opacity="0.16"/>
+
+      <g transform="rotate(-9 1077 248)">
+        <rect x="1068" y="128" width="19" height="120" rx="1.5" fill="#9C7A2A"/>
+        <rect x="1071" y="138" width="2" height="98" fill="#FFFFFF" opacity="0.18"/>
+      </g>
+    </g>
+
+    <!-- brass bookend -->
+    <path d="M1104 248V194h9v46h18v8z" fill="#C9A45C" opacity="0.82"/>
+    <path d="M1104 194h9v4h-9z" fill="#FFFFFF" opacity="0.25"/>
+  </g>
+</svg>

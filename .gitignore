@@ -1,0 +1,15 @@
+# Local library content — never commit ebooks, covers or generated metadata.
+/books/*
+!/books/.gitkeep
+
+/cache/*
+!/cache/.gitkeep
+!/cache/covers/
+/cache/covers/*
+!/cache/covers/.gitkeep
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+*.swp
+*~
