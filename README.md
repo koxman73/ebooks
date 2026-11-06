@@ -2,20 +2,13 @@
 
 # EPUB Library
 
-A small, self-hosted PHP site that turns a folder of EPUB files into a private library for your e-reader **and** your browser. No database, no Composer, no build step — just PHP and a folder of books.
+A small, self-hosted PHP site that turns a folder of EPUB files into a private, downloadable library for your e-reader **and** your browser. No database, no Composer, no build step — just PHP and a folder of books.
 
-- **E-readers with a limited browser** (e.g. Tolino) get a deliberately plain, server-rendered page: no JavaScript, no webfonts, no external requests.
+- **E-readers with a limited browser** (e.g. Tolino) get a deliberately plain, server-rendered page: no JavaScript, no webfonts, no external requests. They can download ebooks directly avoiding plugging them in.
 - **Desktop and mobile browsers** get a proper reading-room UI with covers, live search, sorting, dark mode, and a **Rescan shelf** button.
 
 > **No books are included in this repository.** The `books/` and `cache/` directories are gitignored, and no personal library metadata is hard-coded anywhere in the project. Add your own EPUBs and run the scanner.
 
-## Live instance
-
-A running deployment is available on the local network at:
-
-**http://10.0.0.2:1080/ebooks**
-
-This directory is that deployment: the NAS serves it directly, so PHP changes take effect on the next request. `books/` and `cache/` live next to the code and are gitignored.
 
 ## Highlights
 
