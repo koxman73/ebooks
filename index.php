@@ -40,6 +40,7 @@ function format_date(?int $mtime): string {
 /* ---- Security headers ---- */
 header('X-Content-Type-Options: nosniff');
 header('Referrer-Policy: no-referrer');
+header('Cache-Control: private, no-cache');
 header("Content-Security-Policy: default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'");
 
 $booksJson = json_encode(
@@ -89,9 +90,17 @@ a { color:#000; text-decoration:underline }
 <?php foreach ($books as $b): ?>
 <div class="book">
 
-  <?php if (!empty($b['cover'])): ?>
+  <?php
+    $coverUrl = '';
+    if (!empty($b['thumb'])) {
+        $coverUrl = 'cover.php?s=thumb&f=' . urlencode(basename((string)$b['thumb'])) . '&v=' . (int)($b['mtime'] ?? 0);
+    } elseif (!empty($b['cover'])) {
+        $coverUrl = 'cover.php?s=full&f=' . urlencode(basename((string)$b['cover'])) . '&v=' . (int)($b['mtime'] ?? 0);
+    }
+  ?>
+  <?php if ($coverUrl !== ''): ?>
   <div class="cover">
-    <img src="<?=h($b['cover'])?>" alt="">
+    <img src="<?=h($coverUrl)?>" alt="">
   </div>
   <?php endif; ?>
 
@@ -279,7 +288,7 @@ a{color:inherit}
 }
 .rescan button:hover:not(:disabled){background:rgba(201,164,92,.16); border-color:#C9A45C}
 .rescan button:disabled{opacity:.55; cursor:wait}
-.status{font-size:.78rem; color:#BFB49C}
+.status{font-size:.78rem; color:#BFB49C; white-space:pre-line}
 
 /* ---------- shelves ---------- */
 .shelf{
@@ -528,6 +537,14 @@ function formatDate(ts){
   });
 }
 
+function coverUrl(b){
+  const path = b.thumb || b.cover;
+  if (!path) return '';
+  const name = path.split('/').pop();
+  const size = b.thumb ? 'thumb' : 'full';
+  return 'cover.php?s=' + size + '&f=' + encodeURIComponent(name) + '&v=' + (b.mtime || 0);
+}
+
 const BOOK_ICON = `<svg class="empty-icon" viewBox="0 0 64 64" fill="none" aria-hidden="true">
   <path d="M13 19c6.4-2.2 12.8-1.8 19 2.6v27c-6.2-4.4-12.6-4.8-19-2.6V19Z" stroke="currentColor" stroke-width="2"/>
   <path d="M51 19c-6.4-2.2-12.8-1.8-19 2.6v27c6.2-4.4 12.6-4.8 19-2.6V19Z" stroke="currentColor" stroke-width="2"/>
@@ -569,14 +586,15 @@ function render(){
 
   for (const b of list){
     const title = b.title || b.file;
+    const cover = coverUrl(b);
     const card = document.createElement('article');
     card.className = 'book';
     card.style.setProperty('--spine', spineFor(title));
 
     card.innerHTML = `
       <div class="cover-shell">
-        ${b.cover
-          ? `<img class="cover" src="${esc(b.cover)}" alt="Cover of ${esc(title)}" loading="lazy">`
+        ${cover
+          ? `<img class="cover" src="${esc(cover)}" alt="Cover of ${esc(title)}" loading="lazy">`
           : `<div class="cover-fallback" aria-hidden="true">${esc(initials(title))}</div>`}
       </div>
       <div class="details">

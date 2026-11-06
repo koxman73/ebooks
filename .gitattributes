@@ -1,0 +1,15 @@
+* text=auto eol=lf
+
+*.php   text eol=lf
+*.md    text eol=lf
+*.yml   text eol=lf
+*.yaml  text eol=lf
+*.json  text eol=lf
+*.svg   text eol=lf
+
+*.epub  binary
+*.jpg   binary
+*.jpeg  binary
+*.png   binary
+*.gif   binary
+*.webp  binary
