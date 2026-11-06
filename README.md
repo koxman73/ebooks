@@ -190,6 +190,7 @@ The scanner can run over HTTP or from the CLI. `index.php` only reads `cache/ind
 - JSON embedded in `index.php` is encoded with `JSON_HEX_TAG`, so EPUB metadata cannot break out of the `<script>` block.
 - `index.php` sends a restrictive Content-Security-Policy plus `X-Content-Type-Options` and `Referrer-Policy` headers.
 - The site makes no third-party requests. Typography uses the system serif and sans stacks, so it works fully offline.
+- `books/` lives inside the web root, so a web server that serves static files may also allow direct EPUB requests in addition to `download.php`. There is no authentication; treat the whole deployment as private.
 - `books/` and `cache/` are gitignored. Do not commit your library or generated covers to a public repository.
 - No telemetry, analytics, or outbound calls.
 
