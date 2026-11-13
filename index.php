@@ -315,6 +315,17 @@ a{color:inherit}
   box-shadow:0 14px 22px -14px var(--shadow), inset 0 0 0 1px rgba(33,31,26,.14);
   transition:transform .25s ease, box-shadow .25s ease;
 }
+.cover-button{
+  display:block;
+  width:100%;
+  padding:0;
+  color:inherit;
+  background:none;
+  border:0;
+  font:inherit;
+  text-align:inherit;
+  cursor:zoom-in;
+}
 .cover-shell::before{
   content:""; position:absolute; inset:0 auto 0 0; width:10px; z-index:2;
   background:linear-gradient(90deg, rgba(0,0,0,.35), rgba(0,0,0,.08) 55%, transparent);
@@ -374,6 +385,76 @@ a{color:inherit}
 .download svg{width:13px; height:13px; transition:transform .2s}
 .download:hover{border-bottom-color:var(--moss)}
 .download:hover svg{transform:translateY(2px)}
+
+/* ---------- full-size cover viewer ---------- */
+.cover-viewer{
+  width:100vw;
+  max-width:none;
+  height:100vh;
+  height:100dvh;
+  max-height:none;
+  margin:0;
+  padding:0;
+  overflow:hidden;
+  color:#fff;
+  background:transparent;
+  border:0;
+}
+.cover-viewer::backdrop{background:rgba(10,9,7,.88)}
+.cover-viewer[open]{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.cover-viewer-inner{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  width:100%;
+  height:100%;
+  padding:4rem 1.5rem 1.5rem;
+}
+.cover-viewer img{
+  display:block;
+  max-width:min(92vw, 1100px);
+  max-height:calc(100vh - 7rem);
+  max-height:calc(100dvh - 7rem);
+  object-fit:contain;
+  border-radius:2px;
+  box-shadow:0 24px 70px rgba(0,0,0,.65);
+}
+.cover-viewer-caption{
+  max-width:min(90vw, 52rem);
+  margin:.8rem 0 0;
+  overflow:hidden;
+  color:#E8E2D5;
+  font-family:Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', ui-serif, serif;
+  font-size:.92rem;
+  text-align:center;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.cover-viewer-close{
+  position:absolute;
+  top:max(1rem, env(safe-area-inset-top));
+  right:max(1rem, env(safe-area-inset-right));
+  display:grid;
+  place-items:center;
+  width:2.75rem;
+  height:2.75rem;
+  padding:0;
+  color:#fff;
+  background:rgba(0,0,0,.42);
+  border:1px solid rgba(255,255,255,.55);
+  border-radius:50%;
+  font:inherit;
+  font-size:1.65rem;
+  line-height:1;
+  cursor:pointer;
+}
+.cover-viewer-close:hover{background:rgba(255,255,255,.14)}
+body.cover-viewer-open{overflow:hidden}
 
 /* ---------- empty / no-js ---------- */
 .empty{
@@ -477,6 +558,14 @@ a{color:inherit}
 
 <main id="grid" class="shelf" aria-label="Books"></main>
 
+<dialog class="cover-viewer" id="cover-viewer" aria-labelledby="cover-viewer-caption">
+  <div class="cover-viewer-inner">
+    <button class="cover-viewer-close" type="button" aria-label="Close full-size cover">&times;</button>
+    <img id="cover-viewer-image" src="" alt="">
+    <p class="cover-viewer-caption" id="cover-viewer-caption"></p>
+  </div>
+</dialog>
+
 <noscript>
   <section class="no-js">
     <h2>JavaScript is off</h2>
@@ -545,6 +634,42 @@ function coverUrl(b){
   return 'cover.php?s=' + size + '&f=' + encodeURIComponent(name) + '&v=' + (b.mtime || 0);
 }
 
+function fullCoverUrl(b){
+  if (!b.cover) return '';
+  const name = b.cover.split('/').pop();
+  return 'cover.php?s=full&f=' + encodeURIComponent(name) + '&v=' + (b.mtime || 0);
+}
+
+const coverViewer = document.getElementById('cover-viewer');
+const coverViewerImage = document.getElementById('cover-viewer-image');
+const coverViewerCaption = document.getElementById('cover-viewer-caption');
+const coverViewerClose = coverViewer.querySelector('.cover-viewer-close');
+
+function openCover(url, title){
+  coverViewerImage.src = url;
+  coverViewerImage.alt = 'Full-size cover of ' + title;
+  coverViewerCaption.textContent = title;
+  document.body.classList.add('cover-viewer-open');
+  coverViewer.showModal();
+}
+
+function closeCover(){
+  coverViewer.close();
+}
+
+coverViewerClose.addEventListener('click', closeCover);
+coverViewer.addEventListener('click', event => {
+  if (event.target === coverViewer || event.target.classList.contains('cover-viewer-inner')) {
+    closeCover();
+  }
+});
+coverViewer.addEventListener('close', () => {
+  document.body.classList.remove('cover-viewer-open');
+  coverViewerImage.src = '';
+  coverViewerImage.alt = '';
+  coverViewerCaption.textContent = '';
+});
+
 const BOOK_ICON = `<svg class="empty-icon" viewBox="0 0 64 64" fill="none" aria-hidden="true">
   <path d="M13 19c6.4-2.2 12.8-1.8 19 2.6v27c-6.2-4.4-12.6-4.8-19-2.6V19Z" stroke="currentColor" stroke-width="2"/>
   <path d="M51 19c-6.4-2.2-12.8-1.8-19 2.6v27c6.2-4.4 12.6-4.8 19-2.6V19Z" stroke="currentColor" stroke-width="2"/>
@@ -587,16 +712,19 @@ function render(){
   for (const b of list){
     const title = b.title || b.file;
     const cover = coverUrl(b);
+    const fullCover = fullCoverUrl(b);
     const card = document.createElement('article');
     card.className = 'book';
     card.style.setProperty('--spine', spineFor(title));
 
     card.innerHTML = `
-      <div class="cover-shell">
-        ${cover
-          ? `<img class="cover" src="${esc(cover)}" alt="Cover of ${esc(title)}" loading="lazy">`
-          : `<div class="cover-fallback" aria-hidden="true">${esc(initials(title))}</div>`}
-      </div>
+      ${fullCover ? `<button class="cover-button" type="button" aria-label="View full-size cover of ${esc(title)}">` : ''}
+        <div class="cover-shell">
+          ${cover
+            ? `<img class="cover" src="${esc(cover)}" alt="Cover of ${esc(title)}" loading="lazy">`
+            : `<div class="cover-fallback" aria-hidden="true">${esc(initials(title))}</div>`}
+        </div>
+      ${fullCover ? '</button>' : ''}
       <div class="details">
         <h2 title="${esc(title)}">${esc(title)}</h2>
         <p class="author">${esc(b.author || 'Unknown author')}</p>
@@ -611,6 +739,11 @@ function render(){
         </a>
       </div>
     `;
+    if (fullCover){
+      card.querySelector('.cover-button').addEventListener('click', () => {
+        openCover(fullCover, title);
+      });
+    }
     frag.appendChild(card);
   }
 

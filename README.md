@@ -101,6 +101,7 @@ The site works under a path such as `/ebooks/` without configuration: every link
 
 - Masthead with a small bookshelf mark, search field, and sort menu.
 - Books are shown as cover thumbnails standing on wooden shelf boards.
+- Click a cover to open its full-size artwork in a focused viewer.
 - Search filters by title and author as you type (120 ms debounce, accent-insensitive).
 - Sorting uses a numeric-aware collator, so `Book 2` comes before `Book 10`.
 - **Rescan shelf** calls `scan.php` via `fetch()`, shows the scanner's status text, then reloads the page. Scans are incremental; add `?force=1` to the request (or run `php scan.php --force`) for a full rebuild.
